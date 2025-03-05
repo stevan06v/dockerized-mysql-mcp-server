@@ -1,0 +1,6 @@
+[mysqld]
+default-authentication-plugin=caching_sha2_password
+bind-address=0.0.0.0
+max_connections=200
+query_cache_size=16M
+log_bin_trust_function_creators=1
