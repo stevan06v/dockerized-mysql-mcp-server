@@ -10,10 +10,27 @@ services:
       MYSQL_PASSWORD: password
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init-scripts:/docker-entrypoint-initdb.d
-      - ./mysql-config/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf 
+      - ./mysql/init-scripts:/docker-entrypoint-initdb.d
+      - ./mysql/mysql-config/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf 
     ports:
       - "3306:3306"
+    networks:
+      - mysql_network
+  mysql-mcp-server:
+    build:
+      context: ./mysql-mcp
+      dockerfile: Dockerfile
+    container_name: mysql-mcp-server
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: stevan
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: shopdb
+    depends_on:
+      - mysql
+    ports:
+      - "5002:5000"  
     networks:
       - mysql_network
 
